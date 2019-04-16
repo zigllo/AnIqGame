@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8" />
+<head>
+<title>WebSocket Test</title>
+<style type="text/css">
+textarea {
+	resize:none;
+}
+</style>
+</head>
+
+<script language="javascript" type="text/javascript">
+  function init()
+  {
+	//document.myform.url.value = "ws://81.241.134.193:18000/"
+	document.myform.inputtext.value = "qqqq";
+	document.myform.outputtext.readOnly = true;
+	doConnect();
+  }
+  function doConnect()
+  {
+    //websocket = new WebSocket(document.myform.url.value);
+    websocket = new WebSocket("ws://91.182.158.132:18003/");
+    //websocket = new WebSocket("ws://192.168.1.28:18000/");
+    //websocket = new WebSocket("ws://localhost:18000/")
+    websocket.onopen = function(evt) { onOpen(evt) };
+    websocket.onclose = function(evt) { onClose(evt) };
+    websocket.onmessage = function(evt) { onMessage(evt) };
+    websocket.onerror = function(evt) { onError(evt) };
+  }
+  function onOpen(evt)
+  {
+    //writeToScreen("connected\n");
+	//document.myform.connectButton.disabled = true;
+	//document.myform.disconnectButton.disabled = false;
+  }
+  function onClose(evt)
+  {
+    writeToScreen(" Il y a un probleme veuillez rechargez la page\n");
+	//document.myform.connectButton.disabled = false;
+	//document.myform.disconnectButton.disabled = true;
+  }
+  function onMessage(evt)
+  {
+    writeToScreen(evt.data + '\n');
+  }
+  function onError(evt)
+  {
+    writeToScreen('error: ' + evt.data + '\n');
+	websocket.close();
+	//document.myform.connectButton.disabled = false;
+	//document.myform.disconnectButton.disabled = true;
+  }
+  function doSend(message)
+  {
+    //document.myform.inputtext.disabled = true;
+    websocket.send(message);
+    clearInput();
+    //setTimeout(activateInputText, 250);
+  }
+  function activateInputText(){
+    document.myform.inputtext.disabled = false;
+  }
+  function writeToScreen(message)
+  {
+    document.myform.outputtext.value += message
+	document.myform.outputtext.scrollTop = document.myform.outputtext.scrollHeight;
+  }
+  window.addEventListener("load", init, false);
+   function sendText() {
+		doSend( " " + document.myform.inputtext.value );
+   }
+  function clearText() {
+		document.myform.outputtext.value = "";
+   }
+  function clearInput() {
+     document.myform.inputtext.value = "";
+  }
+   function doDisconnect() {
+		websocket.close();
+   }
+
+   window.addEventListener("keyup", function(event) {
+      if(event.keyCode == 13) {
+         //input = input.slice(0, -1);
+         if(document.myform.inputtext.disabled === false){
+            document.myform.inputtext.value = document.myform.inputtext.value.slice(0,-1);
+        	sendText();
+	}
+         //document.getElementById("sendButton").click();
+      }	
+   });
+</script>
+
+<div id="output"></div>
+<!--<var>urla</var>-->
+<form name="myform">
+<p>
+<textarea name="outputtext" rows="20" cols="50"></textarea>
+</p>
+<p>
+<textarea name="inputtext" cols="50"></textarea>
+</p>
+<!--<p>
+<textarea name="url" cols="50"></textarea>
+</p>-->
+<p>
+<input type="button" name=sendButton value="Send" onClick="sendText();">
+<!--<input type="button" name=clearButton value="Clear" onClick="clearText();">
+<input type="button" name=disconnectButton value="Disconnect" onClick="doDisconnect();">
+<input type="button" name=connectButton value="Connect" onClick="doConnect();">-->
+</p>
+
+
+</form>
+</html>

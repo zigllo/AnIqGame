@@ -216,6 +216,7 @@ class Psychoz(WebsocketClient):
                         self.game=number_of_rows
                         cur.execute("INSERT INTO game(client_id,game_id) VALUES ("+str(self.client)+","+str(self.game)+")")
                         cur.close()
+                        self.db.commit()
                     except sqlcon.Error as error:
                         print("Error: {}".format(error))
                         

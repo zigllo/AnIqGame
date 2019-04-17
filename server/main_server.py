@@ -169,6 +169,7 @@ class Psychoz(WebsocketClient):
                 self.send_to_client("$ Merci, que le jeu commence, sois le meilleur "+msg + ".")
                 self.last_event = "start"
                 cur = self.db.cursor()
+                cur.execute("USE theiqgame")
                 cur.execute("INSERT INTO client(pseudo) VALUES (\""+msg+"\")")
                 self.db.commit()
             else:

@@ -171,6 +171,7 @@ class Psychoz(WebsocketClient):
                 cur = self.db.cursor()
                 cur.execute("USE theiqgame")
                 cur.execute("INSERT INTO client(pseudo) VALUES (\""+msg+"\")")
+                cur.close()
                 self.db.commit()
             else:
                 self.send_to_client("$ S'il vous plait entrez un pseudonyme correct, au moins 4 caractères.")
@@ -181,6 +182,7 @@ class Psychoz(WebsocketClient):
             cur.execute("USE theiqgame")
             indice=len(self.events)
             cur.execute("INSERT INTO client(strategie) VALUES (\""+self.events[indice-1]+"\")")
+            cur.close()
 
         elif self.last_event == "end":
             if msg is not None and len(msg) > 1:

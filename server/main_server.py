@@ -200,19 +200,6 @@ class Psychoz(WebsocketClient):
 
         elif self.last_event == "end":
             print("end")
-            try:
-                cur = self.db.cursor(buffered=True)
-                cur.execute("USE theiqgame")
-                cur.execute("SELECT * FROM client")
-                print("a")
-                number_of_rows = cur.rowcount
-                self.game=number_of_rows
-                print("a")
-                cur.execute("INSERT INTO game(client_id,game_id) VALUES (\""+str(self.client)+"\",\""+str(self.game)+"\")")
-                print("a")
-                cur.close()
-            except sqlcon.Error as error:
-                print("Error: {}".format(error))
                 
             if msg is not None and len(msg) > 1:
                 print("OK:" + msg)
@@ -221,6 +208,20 @@ class Psychoz(WebsocketClient):
                     self.last_event = "replay"
                     self.send_to_client("$ Que le jeu REcommence.")
                     self.nb_input = 0
+                    try:
+                        cur = self.db.cursor(buffered=True)
+                        cur.execute("USE theiqgame")
+                        cur.execute("SELECT * FROM client")
+                        print("a")
+                        number_of_rows = cur.rowcount
+                        self.game=number_of_rows
+                        print("a")
+                        cur.execute("INSERT INTO game(client_id,game_id) VALUES (\""+str(self.client)+"\",\""+str(self.game)+"\")")
+                        print("a")
+                        cur.close()
+                    except sqlcon.Error as error:
+                        print("Error: {}".format(error))
+                        
                 elif msg[1].upper() == "N":
                     self.last_event = "strategy"
                     self.send_to_client("$ Qu'elle était votre stratégie pour ce jeu?")

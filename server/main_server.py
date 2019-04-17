@@ -160,7 +160,8 @@ class Psychoz(WebsocketClient):
 
     def receive(self, msg):
         print("get " + self.pseudo + " msg" + msg)
-        
+        print(self.game)
+        print(self.client)
         if self.last_event == "name":
             self.server.on_msg(msg, self)
             
@@ -186,6 +187,7 @@ class Psychoz(WebsocketClient):
                 self.send_to_client("$ S'il vous plait entrez un pseudonyme correct, au moins 4 caractères.")
 
         elif self.last_event == "strategy":
+            print("strategie")
             self.send_to_client("$ Merci d'avoir jouer")
             cur = self.db.cursor()
             cur.execute("USE theiqgame")
@@ -196,6 +198,7 @@ class Psychoz(WebsocketClient):
         
 
         elif self.last_event == "end":
+            print("end")
             cur = self.db.cursor()
             cur.execute("USE theiqgame")
             number_of_rows= cursor.execute("SELECT * FROM client")

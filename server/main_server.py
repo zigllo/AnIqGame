@@ -198,7 +198,7 @@ class Psychoz(WebsocketClient):
             cur.execute("USE theiqgame")
             number_of_rows= cursor.execute("SELECT * FROM client")
             self.game=number_of_rows
-            cur.execute("INSERT INTO game(client_id,game_id) VALUES (\""self.client"\",\""self.game"\")")
+            cur.execute("INSERT INTO game(client_id,game_id) VALUES (\""+self.client+"\",\""+self.game+"\")")
             cur.close()
 
         elif self.last_event == "end":

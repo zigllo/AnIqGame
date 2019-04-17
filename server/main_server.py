@@ -113,6 +113,9 @@ class WebsocketServer(WebSocket):
     def handleConnected(self):
         new_client = Psychoz(self)
         self.game_client = self.game_server.on_new_client(new_client)
+        
+    def handleClose(self):
+        print("Someone left")
 
     def send(self, msg):
         self.sendMessage(msg)

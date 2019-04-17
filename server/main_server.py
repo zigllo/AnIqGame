@@ -201,12 +201,17 @@ class Psychoz(WebsocketClient):
 
         elif self.last_event == "end":
             print("end")
-            cur = self.db.cursor(buffered=True)
-            cur.execute("USE theiqgame")
-            number_of_rows= cursor.execute("SELECT * FROM client")
-            self.game=number_of_rows
-            cur.execute("INSERT INTO game(client_id,game_id) VALUES (\""+str(self.client)+"\",\""+str(self.game)+"\")")
-            cur.close()
+            try:
+                cur = self.db.cursor(buffered=True)
+                cur.execute("USE theiqgame")
+                cursor.execute("SELECT * FROM client")
+                number_of_rows = cur.rowcount
+                self.game=number_of_rows
+                cur.execute("INSERT INTO game(client_id,game_id) VALUES (\""+str(self.client)+"\",\""+str(self.game)+"\")")
+                cur.close()
+            except sqlcon.Error as error:
+                print("Error: {}".format(error))
+                
             if msg is not None and len(msg) > 1:
                 print("OK:" + msg)
                 if msg[1].upper() == "O":

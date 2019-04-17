@@ -7,6 +7,7 @@ import time
 import _thread
 from web_socket_server import SimpleWebSocketServer, WebSocket
 from random import randint
+import mysql.connector as sqlcon
 
 def check_litteral(name):
     valid_char = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
@@ -166,9 +167,7 @@ class Psychoz(WebsocketClient):
                 self.send_to_client("$ Merci, que le jeu commence, sois le meilleur "+msg + ".")
                 self.last_event = "start"
                 cur = self.db.cursor()
-                cur.execute("INSERT INTO client "
-                              "(pseudo) "
-                              "VALUES (msg)")
+                cur.execute("INSERT INTO client(pseudo) VALUES (msg)")
             else:
                 self.send_to_client("$ S'il vous plait entrez un pseudonyme correct, au moins 4 caractères.")
 

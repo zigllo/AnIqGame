@@ -176,12 +176,9 @@ class Psychoz(WebsocketClient):
                     
                     cur = self.db.cursor(buffered=True)
                     cur.execute("USE theiqgame")
-                    print("yesno")
                     number_of_rows= cur.execute("SELECT * FROM client")
                     self.client=number_of_rows
-                    print("yes")
                     cur.execute("INSERT INTO client(pseudo,client_id) VALUES (\""+msg+"\",\""+str(number_of_rows)+"\")")
-                    print("no")
                     cur.close()
                     self.db.commit()
                 except sqlcon.Error as error:
@@ -192,7 +189,7 @@ class Psychoz(WebsocketClient):
         elif self.last_event == "strategy":
             print("strategie")
             self.send_to_client("$ Merci d'avoir jouer")
-            cur = self.db.cursor()
+            cur = self.db.cursor(buffered=True)
             cur.execute("USE theiqgame")
             indice=len(self.events)
             cur.execute("INSERT INTO client(strategie) VALUES (\""+self.events[indice-1]+"\")")
@@ -202,7 +199,7 @@ class Psychoz(WebsocketClient):
 
         elif self.last_event == "end":
             print("end")
-            cur = self.db.cursor()
+            cur = self.db.cursor(buffered=True)
             cur.execute("USE theiqgame")
             number_of_rows= cursor.execute("SELECT * FROM client")
             self.game=number_of_rows

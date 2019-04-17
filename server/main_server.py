@@ -157,29 +157,30 @@ class Psychoz(WebsocketClient):
 
     def receive(self, msg):
         print("get " + self.pseudo + " msg" + msg)
+        print(self.events)
         if self.last_event == "name":
             self.server.on_msg(msg, self)
             self.events.append(msg)
-            print(self.events)
+            
             if msg is not None and len(msg) > 3:
                 # Maybe use a sort of database to keep track of past try on the "game".
                 # Need unique pseudonyme.
                 self.pseudo = msg
                 self.send_to_client("$ Merci, que le jeu commence, sois le meilleur "+msg + ".")
                 self.last_event = "start"
-                try:
-                    cur = self.db.cursor()
-                    cur.execute("USE theiqgame")
-                    cur.execute("INSERT INTO client(pseudo) VALUES (\""+msg+"\")")
-                    self.db.commit()
-                except sqlcon.Error as error:
-                    print("Error: {}".format(error))
-                    
+                cur = self.db.cursor()
+                cur.execute("USE theiqgame")
+                cur.execute("INSERT INTO client(pseudo) VALUES (\""+msg+"\")")
+                self.db.commit()
             else:
                 self.send_to_client("$ S'il vous plait entrez un pseudonyme correct, au moins 4 caractères.")
 
         elif self.last_event == "strategy":
             self.send_to_client("$ Merci d'avoir jouer")
+            cur = self.db.cursor()
+            cur.execute("USE theiqgame")
+            indice=len(self.events)
+            cur.execute("INSERT INTO client(strategie) VALUES (\""+self.events[indice-1]+"\")")
 
         elif self.last_event == "end":
             if msg is not None and len(msg) > 1:

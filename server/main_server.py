@@ -169,7 +169,10 @@ class Psychoz(WebsocketClient):
                 print("1")
                 cur = self.db.cursor()
                 print("2")
-                cur.execute("USE theiqgame")
+                try:
+                    cur.execute("USE theiqgame")
+                except sqlcon.Error as err:
+                    print("Something went wrong: {}".format(err))
                 print("3")
                 cur.execute("INSERT INTO client(pseudo) VALUES (\""+msg+"\")")
                 print("4")

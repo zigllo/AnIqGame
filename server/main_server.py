@@ -203,7 +203,7 @@ class Psychoz(WebsocketClient):
             try:
                 cur = self.db.cursor(buffered=True)
                 cur.execute("USE theiqgame")
-                cursor.execute("SELECT * FROM client")
+                cur.execute("SELECT * FROM client")
                 print("a")
                 number_of_rows = cur.rowcount
                 self.game=number_of_rows

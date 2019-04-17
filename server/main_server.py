@@ -160,6 +160,7 @@ class Psychoz(WebsocketClient):
         if self.last_event == "name":
             self.server.on_msg(msg, self)
             self.events.append(msg)
+            print(self.events)
             if msg is not None and len(msg) > 3:
                 # Maybe use a sort of database to keep track of past try on the "game".
                 # Need unique pseudonyme.

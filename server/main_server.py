@@ -178,6 +178,7 @@ class Psychoz(WebsocketClient):
                     cur.execute("USE theiqgame")
                     number_of_rows= cur.execute("SELECT * FROM client")
                     self.client=number_of_rows
+                    print(number_of_rows)
                     cur.execute("INSERT INTO client(pseudo,client_id) VALUES (\""+msg+"\",\""+str(number_of_rows)+"\")")
                     cur.close()
                     self.db.commit()

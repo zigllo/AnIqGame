@@ -174,7 +174,7 @@ class Psychoz(WebsocketClient):
                     cur.execute("INSERT INTO client(pseudo) VALUES (\""+msg+"\")")
                     cur.close()
                     self.db.commit()
-                except sqlcur.Error as error:
+                except sqlcon.Error as error:
                     print("Error: {}".format(error))
             else:
                 self.send_to_client("$ S'il vous plait entrez un pseudonyme correct, au moins 4 caractères.")

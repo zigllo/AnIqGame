@@ -166,18 +166,10 @@ class Psychoz(WebsocketClient):
                 self.pseudo = msg
                 self.send_to_client("$ Merci, que le jeu commence, sois le meilleur "+msg + ".")
                 self.last_event = "start"
-                print("1")
                 cur = self.db.cursor()
-                print("2")
-                try:
-                    cur.execute("USE theiqgame")
-                except sqlcon.Error as err:
-                    print("Something went wrong: {}".format(err))
-                print("3")
+                cur.execute("USE theiqgame")
                 cur.execute("INSERT INTO client(pseudo) VALUES (\""+msg+"\")")
-                print("4")
                 self.db.commit()
-                print("5")
             else:
                 self.send_to_client("$ S'il vous plait entrez un pseudonyme correct, au moins 4 caractères.")
 

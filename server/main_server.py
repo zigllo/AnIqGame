@@ -154,6 +154,7 @@ class Psychoz(WebsocketClient):
         self.start_time = time.time()
         self.last_event = "name"
         self.db=sqlcon.connect(host="127.0.0.1")
+        print("connected to db")
 
     def receive(self, msg):
         print("get " + self.pseudo + " msg" + msg)
@@ -167,7 +168,8 @@ class Psychoz(WebsocketClient):
                 self.send_to_client("$ Merci, que le jeu commence, sois le meilleur "+msg + ".")
                 self.last_event = "start"
                 cur = self.db.cursor()
-                cur.execute("INSERT INTO client(pseudo) VALUES (msg)")
+                cur.execute("INSERT INTO client(pseudo) VALUES (\""+msg+"\")")
+                self.db.commit()
             else:
                 self.send_to_client("$ S'il vous plait entrez un pseudonyme correct, au moins 4 caractères.")
 

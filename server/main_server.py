@@ -177,7 +177,7 @@ class Psychoz(WebsocketClient):
                     cur.execute("USE theiqgame")
                     number_of_rows= cursor.execute("SELECT * FROM client")
                     self.client=number_of_rows
-                    cur.execute("INSERT INTO client(pseudo,client_id) VALUES (\""+msg+"\",\""+number_of_rows+"\")")
+                    cur.execute("INSERT INTO client(pseudo,client_id) VALUES (\""+msg+"\",\""+str(number_of_rows)+"\")")
                     cur.close()
                     self.db.commit()
                 except sqlcon.Error as error:
@@ -193,15 +193,15 @@ class Psychoz(WebsocketClient):
             cur.execute("INSERT INTO client(strategie) VALUES (\""+self.events[indice-1]+"\")")
             cur.close()
            
-        if self.last_event == "replay" or self.last_event =="strategy":
+        
+
+        elif self.last_event == "end":
             cur = self.db.cursor()
             cur.execute("USE theiqgame")
             number_of_rows= cursor.execute("SELECT * FROM client")
             self.game=number_of_rows
-            cur.execute("INSERT INTO game(client_id,game_id) VALUES (\""+self.client+"\",\""+self.game+"\")")
+            cur.execute("INSERT INTO game(client_id,game_id) VALUES (\""+str(self.client)+"\",\""+str(self.game)+"\")")
             cur.close()
-
-        elif self.last_event == "end":
             if msg is not None and len(msg) > 1:
                 print("OK:" + msg)
                 if msg[1].upper() == "O":

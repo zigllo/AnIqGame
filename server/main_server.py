@@ -193,7 +193,7 @@ class Psychoz(WebsocketClient):
             cur.execute("INSERT INTO client(strategie) VALUES (\""+self.events[indice-1]+"\")")
             cur.close()
            
-        if self.last_event = "replay" or self.last_event ="strategy":
+        if self.last_event == "replay" or self.last_event =="strategy":
             cur = self.db.cursor()
             cur.execute("USE theiqgame")
             number_of_rows= cursor.execute("SELECT * FROM client")

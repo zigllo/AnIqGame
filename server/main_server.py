@@ -211,13 +211,10 @@ class Psychoz(WebsocketClient):
                     try:
                         cur = self.db.cursor(buffered=True)
                         cur.execute("USE theiqgame")
-                        cur.execute("SELECT * FROM client")
-                        print("a")
+                        cur.execute("SELECT * FROM game")
                         number_of_rows = cur.rowcount
                         self.game=number_of_rows
-                        print("a")
                         cur.execute("INSERT INTO game(client_id,game_id) VALUES (\""+str(self.client)+"\",\""+str(self.game)+"\")")
-                        print("a")
                         cur.close()
                     except sqlcon.Error as error:
                         print("Error: {}".format(error))

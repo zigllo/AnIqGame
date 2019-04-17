@@ -216,7 +216,7 @@ class Psychoz(WebsocketClient):
 
 
     def send_to_client(self, msg):
-        self.events.append(msg)
+        
         self.websocket.send(msg)
 
 

@@ -174,7 +174,7 @@ class Psychoz(WebsocketClient):
                 self.last_event = "start"
                 try:
                     
-                    cur = self.db.cursor()
+                    cur = self.db.cursor(buffered=True)
                     cur.execute("USE theiqgame")
                     print("yesno")
                     number_of_rows= cur.execute("SELECT * FROM client")

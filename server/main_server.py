@@ -154,7 +154,7 @@ class Psychoz(WebsocketClient):
         self.start_time = time.time()
         self.last_event = "name"
         print("yeah")
-        self.db=sqlcon.connect(host="127.0.0.1")
+        self.db=sqlcon.connect(host="127.0.0.1", user="root", passwd="root")
         print("connected to db")
 
     def receive(self, msg):

@@ -147,6 +147,7 @@ class WebsocketClient(Client):
 class Psychoz(WebsocketClient):
     def __init__(self, websocket, name='Unnamed', server=None):
         super().__init__(websocket, name, server)
+        self.client=0
         self.events = []
         self.points = 0
         self.pseudo = "Unnamed"
@@ -154,13 +155,15 @@ class Psychoz(WebsocketClient):
         self.start_time = time.time()
         self.last_event = "name"
         self.db=sqlcon.connect(host="127.0.0.1", user="user", passwd="root")
+        self.game=0
+        
 
     def receive(self, msg):
         print("get " + self.pseudo + " msg" + msg)
-        print(self.events)
+        
         if self.last_event == "name":
             self.server.on_msg(msg, self)
-            self.events.append(msg)
+            
             
             if msg is not None and len(msg) > 3:
                 # Maybe use a sort of database to keep track of past try on the "game".
@@ -169,9 +172,12 @@ class Psychoz(WebsocketClient):
                 self.send_to_client("$ Merci, que le jeu commence, sois le meilleur "+msg + ".")
                 self.last_event = "start"
                 try:
+                    
                     cur = self.db.cursor()
                     cur.execute("USE theiqgame")
-                    cur.execute("INSERT INTO client(pseudo) VALUES (\""+msg+"\")")
+                    number_of_rows= cursor.execute("SELECT * FROM client")
+                    self.client=number_of_rows
+                    cur.execute("INSERT INTO client(pseudo,client_id) VALUES (\""+msg+"\",\""+number_of_rows+"\")")
                     cur.close()
                     self.db.commit()
                 except sqlcon.Error as error:
@@ -185,6 +191,14 @@ class Psychoz(WebsocketClient):
             cur.execute("USE theiqgame")
             indice=len(self.events)
             cur.execute("INSERT INTO client(strategie) VALUES (\""+self.events[indice-1]+"\")")
+            cur.close()
+           
+        if self.last_event = "replay" or self.last_event ="strategy":
+            cur = self.db.cursor()
+            cur.execute("USE theiqgame")
+            number_of_rows= cursor.execute("SELECT * FROM client")
+            self.game=number_of_rows
+            cur.execute("INSERT INTO game(client_id,game_id) VALUES (\""self.client"\",\""self.game"\")")
             cur.close()
 
         elif self.last_event == "end":

@@ -176,10 +176,12 @@ class Psychoz(WebsocketClient):
                     
                     cur = self.db.cursor()
                     cur.execute("USE theiqgame")
-                    print("lamered'anthony")
+                    print("yesno")
                     number_of_rows= cursor.execute("SELECT * FROM client")
                     self.client=number_of_rows
+                    print("yes")
                     cur.execute("INSERT INTO client(pseudo,client_id) VALUES (\""+msg+"\",\""+str(number_of_rows)+"\")")
+                    print("no")
                     cur.close()
                     self.db.commit()
                 except sqlcon.Error as error:

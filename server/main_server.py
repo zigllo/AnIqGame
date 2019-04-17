@@ -160,8 +160,7 @@ class Psychoz(WebsocketClient):
 
     def receive(self, msg):
         print("get " + self.pseudo + " msg" + msg)
-        print(self.game)
-        print(self.client)
+        print(self.game, self.client)
         if self.last_event == "name":
             self.server.on_msg(msg, self)
             
@@ -205,9 +204,12 @@ class Psychoz(WebsocketClient):
                 cur = self.db.cursor(buffered=True)
                 cur.execute("USE theiqgame")
                 cursor.execute("SELECT * FROM client")
+                print("a")
                 number_of_rows = cur.rowcount
                 self.game=number_of_rows
+                print("a")
                 cur.execute("INSERT INTO game(client_id,game_id) VALUES (\""+str(self.client)+"\",\""+str(self.game)+"\")")
+                print("a")
                 cur.close()
             except sqlcon.Error as error:
                 print("Error: {}".format(error))

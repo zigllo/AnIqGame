@@ -231,7 +231,7 @@ class Psychoz(WebsocketClient):
             self.events.append(msg)
             self.nb_input += 1
             rand = randint(1,20)
-            
+            point=0;
             
             if rand <= 2 and self.nb_input > 3:
                 # Game is finished

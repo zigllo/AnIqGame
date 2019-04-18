@@ -206,7 +206,7 @@ class Psychoz(WebsocketClient):
                 cur = self.db.cursor(buffered=True)
                 cur.execute("USE theiqgame")
            
-                cur.execute("UPDATE client set strat=\""+self.events[-1]+"\")") where client.id=self.client
+                cur.execute("UPDATE client set strat=\""+self.events[-1]+"\")" where client.id=self.client)
                 cur.close()
                 self.db.commit()
             except sqlcon.Error as error:

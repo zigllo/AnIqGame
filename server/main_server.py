@@ -184,6 +184,18 @@ class Psychoz(WebsocketClient):
                     self.db.commit()
                 except sqlcon.Error as error:
                     print("Error: {}".format(error))
+                    
+                try:
+                        cur = self.db.cursor(buffered=True)
+                        cur.execute("USE theiqgame")
+                        cur.execute("SELECT * FROM game")
+                        number_of_rows = cur.rowcount
+                        self.game=number_of_rows
+                        cur.execute("INSERT INTO game(client_id,game_id) VALUES ("+str(self.client)+","+str(self.game)+")")
+                        cur.close()
+                        self.db.commit()
+                    except sqlcon.Error as error:
+                        print("Error: {}".format(error))
             else:
                 self.send_to_client("$ S'il vous plait entrez un pseudonyme correct, au moins 4 caractères.")
 

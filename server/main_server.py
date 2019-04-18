@@ -231,6 +231,8 @@ class Psychoz(WebsocketClient):
             self.events.append(msg)
             self.nb_input += 1
             rand = randint(1,20)
+            cur = self.db.cursor(buffered=True)
+            cur.execute("USE theiqgame")
 
             if rand <= 2 and self.nb_input > 3:
                 # Game is finished
@@ -238,18 +240,20 @@ class Psychoz(WebsocketClient):
                 self.send_to_client("$ Vous avez terminé cette partie avec " + str(self.points) + " points en " + str(int(time.time()-self.start_time)) + " secondes")
                 self.points = 0
                 self.send_to_client("$ Voulez vous rejouer? (oui/non)")
-
+                cur.execute("INSERT INTO evenement(point,game_id) VALUES ("+str(0)+","+str(self.game)+")")
             elif rand >= 8 and rand < 10:
                 # Loose a point
                 point = randint(1,7)
                 self.points -= point
                 self.send_to_client("$ Vous avez perdu "+ str(point)+" points. (vous avez actuellement " + str(self.points) + " points)")
+                cur.execute("INSERT INTO evenement(point,game_id) VALUES ("+str(-point)+","+str(self.game)+")")
             elif rand < 8 and rand > 2:
                 # Win a point
                 point = randint(1,10)
                 self.points += point
                 self.send_to_client("$ Vous avez gagné "+str(point)+" points. (vous avez actuellement " + str(self.points) + " points)")
-
+                cur.execute("INSERT INTO evenement(point,game_id) VALUES ("+str(point)+","+str(self.game)+")")
+            cur.close()
 
     def send_to_client(self, msg):
         

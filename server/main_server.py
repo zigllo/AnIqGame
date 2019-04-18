@@ -231,8 +231,7 @@ class Psychoz(WebsocketClient):
             self.events.append(msg)
             self.nb_input += 1
             rand = randint(1,20)
-            cur = self.db.cursor(buffered=True)
-            cur.execute("USE theiqgame")
+            
             
             if rand <= 2 and self.nb_input > 3:
                 # Game is finished
@@ -252,11 +251,14 @@ class Psychoz(WebsocketClient):
                 point = randint(1,10)
                 self.points += point
                 self.send_to_client("$ Vous avez gagné "+str(point)+" points. (vous avez actuellement " + str(self.points) + " points)")
-                
-            cur.execute("INSERT INTO evenement(points,game_id,content) VALUES ("+str(point)+","+str(self.game)+")","+str(self.events[-1])+")
+            try:
+            cur = self.db.cursor(buffered=True)
+            cur.execute("USE theiqgame")
+            cur.execute("INSERT INTO evenement(points,game_id,content) VALUES ("+str(point)+","+str(self.game)+",\""+str(self.events[-1])+\"")
             cur.close()
             self.db.commit()
-
+            except sqlcon.Error as error:
+                print("Error: {}".format(error))
     def send_to_client(self, msg):
         
         self.websocket.send(msg)

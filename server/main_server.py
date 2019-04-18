@@ -200,18 +200,21 @@ class Psychoz(WebsocketClient):
                 self.send_to_client("$ S'il vous plait entrez un pseudonyme correct, au moins 4 caractères.")
 
         elif self.last_event == "strategy":
-            print("strategie")
-            self.send_to_client("$ Merci d'avoir jouer")
-            cur = self.db.cursor(buffered=True)
-            cur.execute("USE theiqgame")
-            indice=len(self.events)
-            cur.execute("INSERT INTO client(strategie) VALUES (\""+self.events[indice-1]+"\")")
-            cur.close()
            
+            self.send_to_client("$ Merci d'avoir jouer")
+            try:
+                cur = self.db.cursor(buffered=True)
+                cur.execute("USE theiqgame")
+           
+                cur.execute("UPDATE client set strat=\""+self.events[-1]+"\")") where client.id=self.client
+                cur.close()
+                self.db.commit()
+            except sqlcon.Error as error:
+                print("Error: {}".format(error))
         
 
         elif self.last_event == "end":
-            print("end")
+            
                 
             if msg is not None and len(msg) > 1:
                 print("OK:" + msg)

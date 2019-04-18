@@ -252,11 +252,11 @@ class Psychoz(WebsocketClient):
                 self.points += point
                 self.send_to_client("$ Vous avez gagné "+str(point)+" points. (vous avez actuellement " + str(self.points) + " points)")
             try:
-            cur = self.db.cursor(buffered=True)
-            cur.execute("USE theiqgame")
-            cur.execute("INSERT INTO evenement(points,game_id,content) VALUES ("+str(point)+","+str(self.game)+",\""+str(self.events[-1])+\""+")")
-            cur.close()
-            self.db.commit()
+                cur = self.db.cursor(buffered=True)
+                cur.execute("USE theiqgame")
+                cur.execute("INSERT INTO evenement(points,game_id,content) VALUES ("+str(point)+","+str(self.game)+",\""+str(self.events[-1])+"\")")
+                cur.close()
+                self.db.commit()
             except sqlcon.Error as error:
                 print("Error: {}".format(error))
     def send_to_client(self, msg):

@@ -254,7 +254,7 @@ class Psychoz(WebsocketClient):
             try:
                 cur = self.db.cursor(buffered=True)
                 cur.execute("USE theiqgame")
-                cur.execute("INSERT INTO evenement(points,game_id,content) VALUES ("+str(point)+","+str(self.game)+",\""+str(self.events[-1])+"\")")
+                cur.execute("INSERT INTO event(points,game_id,content) VALUES ("+str(point)+","+str(self.game)+",\""+str(self.events[-1])+"\")")
                 cur.close()
                 self.db.commit()
             except sqlcon.Error as error:
